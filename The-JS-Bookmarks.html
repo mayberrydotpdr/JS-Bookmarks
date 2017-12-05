@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The JS Bookmarks</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+    <style>
+    	html {
+   	    background-color: #c3b6a3;
+		}
+		#printraw {
+		position: absolute;
+		right: 0;
+		}
+		.aTags{
+		color: #090098;
+		text-decoration: none;
+		font-size: 16pt;
+		}
+		span{
+			font-size: 10pt;
+		}
+		a:hover{
+			color: blue;
+			background-color: gold;
+		}
+    </style>
+</head>
+
+<body onload="printBookmarks(newObjArray)">
+<h1>The JS Bookmarks</h1>
+<button onclick="printRaw(newObjArray)" id="printraw">Print RAW</button>
+<button class="jscolor {valueElement:'chosen-value', onFineChange:'setBGColor(this)'}" style="background-image: none; background-color: rgb(171, 37, 103); color: rgb(255, 255, 255);">Choose background</button><button class="jscolor {valueElement:'chosen-value', onFineChange:'setTextColor(this)'}">Pick text color</button>
+<br><hr>
+<div id="wrap"></div>
+    <script type="text/javascript">
+var backGround = document.getElementsByTagName('HTML')[0];
+var wrap = document.getElementById('wrap');
+
+function Bookmark(entry, title){
+	this.entry = entry.split('\n');
+	this.title = title;
+	this.h1 = '<center><h1>'+ this.title +'</h1></center><hr><br>';
+	this.category = '<span>' + this.title + ' &nbsp;&nbsp;&nbsp; Bookmark: &nbsp; </span>';
+	this.aTag = [];
+	for(i=0; i<this.entry.length; i++){
+		this.aTag.push('<a class="aTags" href="' + this.entry[i] + '">' + this.entry[i].slice(0,33) + '</a><br><br>');
+	}
+}
+
+function printBookmarks(ary){
+	for(i=0; i<ary.length; i++){
+		wrap.innerHTML+=ary[i].h1;
+		for(i2=0; i2<ary[i].entry.length; i2++){
+			ai=ary[i].entry[i2].indexOf("//")+2;
+			bi=ary[i].entry[i2].lastIndexOf(".")+5;
+			ci=ary[i].entry[i2].substring(ai, bi);
+			wrap.innerHTML+='<span>' + ary[i].title + ' &nbsp;&nbsp;&nbsp; ---- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>';
+			wrap.innerHTML+='<a class="aTags" target="_blank" href="' + ary[i].entry[i2] + '">' + ci.slice(0, 75) + '</a><br><br>';
+		}
+		wrap.innerHTML+='<br><hr>';
+	}
+};
+
+function printRaw(ary){
+	wrap.innerHTML='';
+	backGround.style.backgroundColor = '#ffffff';
+	for(i=0; i<ary.length; i++){
+		wrap.innerHTML+=ary[i].h1;
+		for(i2=0; i2<ary[i].entry.length; i2++){
+			wrap.innerHTML+='<a style="color: #090098; text-decoration: none; font-size: 16pt;" target="_blank" href="' + ary[i].entry[i2] + '">' + ary[i].entry[i2] + '</a><br><br>';
+		}
+	}
+}
+    </script>
+    <script src="Update-JS-Bookmarks.js"></script>
+    <script>
+	function setBGColor(picker) {
+		document.getElementsByTagName('html')[0].style.backgroundColor = '#' + picker.toString()
+	}
+	function setTextColor(picker) {
+		document.getElementsByTagName('html')[0].style.color = '#' + picker.toString()
+	}
+	</script>
+    <script src="jscolor.js"></script>
+</body>
+</html>
